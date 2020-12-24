@@ -32,10 +32,6 @@ def main():
     txt_stage = get_txt_stage()
     obj_stage = txt2stage(txt_stage)
     cur_screen_stage = get_stage_part(obj_stage, 0, 0)
-    # for i in cur_screen_stage:
-    #     for j in i:
-    #         print(repr(j))
-    #     print(30 * "-")
 
     while not done:
         # --- Main event loop
@@ -51,11 +47,11 @@ def main():
         #x = player_position[0]
         #y = player_position[1]
         y = len(cur_screen_stage) - 1
-        for line in reversed(cur_screen_stage):
+        for line in cur_screen_stage:
             x = len(line) - 1
-            for tile in reversed(line):
+            for tile in line:
                 for element in tile:
-                    element.draw(screen, x, y, 64, 125)
+                    element.draw(screen, 64, 125)
                 x -= 1
             y -= 1
 

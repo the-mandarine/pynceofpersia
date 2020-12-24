@@ -18,19 +18,40 @@ def txt2stage(txt):
     stage = []
     map_y = 0
     for line in txt.split():
+        if not line:
+            continue
         stage.append([])
         map_x = 0
-        prev = None
+        left = None
         for tile_chr in line:
-            tile_objs = TILES.get(tile_chr, [])
+            tile_objs = TILES.get(tile_chr, [Empty])
             objs = [obj() for obj in tile_objs]
-            if objs and prev is not None:
-                objs[0].prev_tile = prev[0]
             stage[map_y].append(objs)
-            prev = stage[map_y][-1]
             map_x += 1
-        # Link the last tile to the first
-        stage[map_y][0][0].prev_tile = stage[map_y][-1][0]
+
+        map_y += 1
+
+    # Link all tiles together and add positions
+    map_y = 0
+    for line in stage:
+        map_x = 0
+        for tile in line:
+            if map_y == 0:
+                tile[0].top = None
+            else:
+                tile[0].top = stage[map_y-1][map_x][0]
+
+            if map_y + 1 == len(stage):
+                tile[0].bottom = None
+            else:
+                tile[0].bottom = stage[map_y+1][map_x][0]
+
+            # looping left/right
+            tile[0].left = line[map_x-1][0]
+            line[map_x-1][0].right = tile[0]
+
+            tile[0].map_pos = (map_x, map_y)
+            map_x += 1
         map_y += 1
 
     return stage
