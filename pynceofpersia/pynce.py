@@ -28,9 +28,9 @@ def main():
 
     txt_stage = get_txt_stage()
     obj_stage = txt2stage(txt_stage)
-    cur_x = 2
-    cur_y = 2
-    scr_stage, scr_roof = get_stage_part(obj_stage, cur_x, cur_y, scrolling=False)
+    cur_x = 0
+    cur_y = 0
+    scr_stage = get_stage_part(obj_stage, cur_x, cur_y, scrolling=False)
 
     while not done:
         # --- Main event loop
@@ -45,11 +45,6 @@ def main():
         player_position = pygame.mouse.get_pos()
         #x = player_position[0]
         #y = player_position[1]
-        x = 0
-        for tile in scr_roof:
-            for element in tile:
-                element.draw(screen, roof=True)
-            x += 1
         y = 0
         for line in scr_stage:
             x = 0

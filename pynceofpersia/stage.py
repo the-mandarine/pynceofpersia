@@ -62,26 +62,25 @@ def txt2stage(txt):
 
 def get_stage_part(stage, start_x, start_y, max_x=10, max_y=3, scrolling=False):
     max_x = min([len(line) for line in stage] + [max_x])
-    max_y = min((len(stage), max_y))
+    max_y = min((len(stage), max_y)) + 1
     stage_part = [max_x * [None] for i in range(max_y)]
+    if start_y == 0:
+        # add empty top-line if we request it
+        stage_part[0] = [[DEFAULT_TILE()] for i in range(max_x)]
+        screen_x = 0
+        for tile in stage_part[0]:
+            for element in tile:
+                element.screen_pos = (screen_x, -1)
+            screen_x += 1
+
     y = 0
     for line in stage[start_y:start_y+max_y]:
         x = 0
         for tile in line[start_x:start_x+max_x]:
             stage_part[y][x] = tile
             for element in tile:
-                element.screen_pos = (x, y)
+                element.screen_pos = (x, y-1)
             x += 1
         y += 1
 
-    if start_y == 0:
-        stage_roof = [[DEFAULT_TILE()] for i in range(max_x)]
-    else:
-        stage_roof = stage[start_y-1][start_x:max_x]
-    map_x = 0
-    for tile in stage_roof:
-        for element in tile:
-            element.screen_pos = (map_x, -1)
-        map_x += 1
-
-    return stage_part, stage_roof
+    return stage_part
