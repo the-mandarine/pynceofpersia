@@ -27,8 +27,7 @@ def main():
     clock = pygame.time.Clock()
 
     stage = Stage("level1.txt")
-    cur_x = 0
-    cur_y = 0
+    cur_x, cur_y = stage.start
     scr_stage = stage.get_stage_part(cur_x, cur_y, scrolling=False)
 
     while not done:

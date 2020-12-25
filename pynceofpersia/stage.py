@@ -1,4 +1,5 @@
 from scenery.base import Empty, Stairs, Floor, Wall
+from pydoc import locate
 import os
 import json
 
@@ -15,6 +16,19 @@ STAGE_START = '@'
 
 DEFAULT_TILE = Empty
 
+class Pos(list):
+    def __init__(self, y, x):
+        super().__init__((int(y), int(x),))
+
+def parse_resource(resource):
+    res_type_s, res_args_s = resource.split(':')
+    res_args = res_args_s.split(',')
+    #
+
+    res_type = locate(res_type_s)
+    resource = res_type(*res_args)
+
+    return resource
 
 def parse_stage(path):
     spath = os.path.join(BASE_STAGE_PATH, path)
@@ -30,13 +44,11 @@ def parse_stage(path):
                 continue
             else:
                 # parse resource
-                key, value = line.split(":")
-                resources[key] = value.strip()
+                key, value = line.split(":", 1)
+                resources[key] = parse_resource(value.strip())
 
     print("Stage map:")
     print(map)
-    print("Stage resources:")
-    print(json.dumps(resources, indent=2))
     return map, resources
 
 
@@ -45,9 +57,10 @@ class Stage(object):
 
     def __init__(self, stage_path=""):
         self.stage_path = stage_path
-        self.txtmap, _ = parse_stage(stage_path)
+        self.txtmap, self.resources = parse_stage(stage_path)
 
         self.build_stage()
+        self.add_resources()
 
     def build_stage(self):
         self.stage = []
@@ -91,6 +104,10 @@ class Stage(object):
                 map_x += 1
             map_y += 1
 
+    def add_resources(self):
+        for res_key, res_value in self.resources.items():
+            print(res_key, ':', repr(res_value))
+            super().__setattr__(res_key, res_value)
 
     def get_stage_part(self, start_x, start_y, max_x=10, max_y=3, scrolling=False):
         max_x = min([len(line) for line in self.stage] + [max_x])
