@@ -25,7 +25,7 @@ class Sprite(pygame.sprite.Sprite):
     d_imgs = []
     front_imgs = []
     imgs = None
-    prev_tile = None
+    bottom = None
     def __init__(self):
         super(Sprite, self).__init__()
 

@@ -9,10 +9,13 @@ from .interface import Sprite
 # - Left tile
 
 class Empty(Sprite):
+    chr = "."
     def __init__(self):
         super().__init__()
 
 class Stairs(Sprite):
+    chr = "@"
+
     def __init__(self):
         super().__init__()
         self.open = False
@@ -23,6 +26,7 @@ class Stairs(Sprite):
 
 
 class Floor(Sprite):
+    chr = "_"
     def __init__(self):
         super().__init__()
         self.a_imgs = [("1241.bmp", 0, 95),]
@@ -31,6 +35,7 @@ class Floor(Sprite):
 
 
 class Wall(Sprite):
+    chr = "#"
     def __init__(self):
         super().__init__()
         self.a_imgs = [("1366.bmp", 0, 0),]

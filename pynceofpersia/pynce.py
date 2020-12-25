@@ -28,21 +28,42 @@ def main():
 
     stage = Stage("level1.txt")
     cur_x, cur_y = stage.start
-    scr_stage = stage.get_stage_part(cur_x, cur_y, scrolling=False)
+    s_pos_x, s_pos_y = stage.start
+
+    scr_stage = stage.get_screen(cur_x, cur_y, scrolling=False)
+
 
     while not done:
         # --- Main event loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_i:
+                    print("up")
+                    cur_y = max(1, cur_y - 1)
+                if event.key == pygame.K_j:
+                    print("left")
+                    # TODO: allow left-right loop
+                    cur_x = max(0, cur_x - 1)
+                if event.key == pygame.K_k:
+                    print("down")
+                    cur_y = min(stage.max_y - 1, cur_y + 1)
+                if event.key == pygame.K_l:
+                    print("right")
+                    cur_x = min(stage.max_x - 1, cur_x + 1)
+
+                scr_stage = stage.get_screen(cur_x, cur_y, scrolling=False)
+                s_pos_x, s_pos_y = stage.get_scr_pos(cur_x, cur_y)
+
+                print(30 * "=")
+                for line in scr_stage:
+                    print("".join([tile[0].chr for tile in line]))
+
 
         #screen.blit(background_image, [0, 0])
         screen.fill(BLACK)
 
-        # --- Drawing code should go here
-        player_position = pygame.mouse.get_pos()
-        #x = player_position[0]
-        #y = player_position[1]
         y = 0
         for line in scr_stage:
             x = 0
@@ -51,6 +72,11 @@ def main():
                     element.draw(screen)
                 x += 1
             y += 1
+
+        px = s_pos_x * 64 + 75
+        py = (s_pos_y - 1) * 125 + 100
+        pygame.draw.circle(screen, WHITE, (px, py), 15, 4)
+
 
         # --- Go ahead and update the screen with what we've drawn.
         pygame.display.flip()

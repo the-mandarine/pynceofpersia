@@ -12,8 +12,6 @@ TILES = {\
   '@': [Stairs],
 }
 
-STAGE_START = '@'
-
 DEFAULT_TILE = Empty
 
 class Pos(list):
@@ -54,6 +52,7 @@ def parse_stage(path):
 
 class Stage(object):
     start_pos = (0, 0)
+    max_x, max_y = (0, 0)
 
     def __init__(self, stage_path=""):
         self.stage_path = stage_path
@@ -70,16 +69,15 @@ class Stage(object):
                 continue
             self.stage.append([])
             map_x = 0
-            left = None
             for tile_chr in line:
                 tile_objs = TILES.get(tile_chr, [DEFAULT_TILE()])
                 objs = [obj() for obj in tile_objs]
                 self.stage[map_y].append(objs)
-                if tile_chr == STAGE_START:
-                    self.start_pos = (map_x, map_y)
                 map_x += 1
+                self.max_x = max(self.max_x, map_x)
 
             map_y += 1
+        self.max_y = map_y
 
         # Link all tiles together and add positions
         map_y = 0
@@ -109,27 +107,30 @@ class Stage(object):
             print(res_key, ':', repr(res_value))
             super().__setattr__(res_key, res_value)
 
-    def get_stage_part(self, start_x, start_y, max_x=10, max_y=3, scrolling=False):
-        max_x = min([len(line) for line in self.stage] + [max_x])
-        max_y = min((len(self.stage), max_y)) + 1
-        stage_part = [max_x * [None] for i in range(max_y)]
-        if start_y == 0:
-            # add empty top-line if we request it
-            stage_part[0] = [[DEFAULT_TILE()] for i in range(max_x)]
-            screen_x = 0
-            for tile in stage_part[0]:
-                for element in tile:
-                    element.screen_pos = (screen_x, -1)
-                screen_x += 1
+    def get_scr_pos(self, res_x, res_y, tps_x=10, tps_y=4):
+        screen_y = max(0, int(res_y / tps_y) * tps_y - 1)
+        scr_x = res_x % tps_x
+        scr_y = res_y - screen_y
+        return scr_x, scr_y
+
+    def get_screen(self, hero_x, hero_y, tps_x=10, tps_y=4, scrolling=False):
+        scr_x = int(hero_x / tps_x) * tps_x
+        scr_y = max(0, int(hero_y / tps_y) * tps_y - 1)
+        max_scr_x = tps_x
+        max_scr_y = min(len(self.stage) - scr_y, tps_y)
+        part = [max_scr_x * [[Empty()]] for i in range(max_scr_y)]
 
         y = 0
-        for line in self.stage[start_y:start_y+max_y]:
+        for line in self.stage[scr_y:scr_y+max_scr_y]:
             x = 0
-            for tile in line[start_x:start_x+max_x]:
-                stage_part[y][x] = tile
+            for tile in line[scr_x:scr_x+max_scr_x]:
+                part[y][x] = tile
                 for element in tile:
                     element.screen_pos = (x, y-1)
                 x += 1
             y += 1
 
-        return stage_part
+        # if not enough lines, add some
+
+
+        return part
