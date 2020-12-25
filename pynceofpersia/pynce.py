@@ -1,7 +1,7 @@
 import pygame
 import random
 import json
-from stage import *
+from stage import Stage
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -26,11 +26,10 @@ def main():
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
 
-    txt_stage = get_txt_stage()
-    obj_stage = txt2stage(txt_stage)
+    stage = Stage()
     cur_x = 0
     cur_y = 0
-    scr_stage = get_stage_part(obj_stage, cur_x, cur_y, scrolling=False)
+    scr_stage = stage.get_stage_part(cur_x, cur_y, scrolling=False)
 
     while not done:
         # --- Main event loop
