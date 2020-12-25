@@ -10,11 +10,11 @@ from .interface import Sprite
 
 class Empty(Sprite):
     def __init__(self):
-        super(Empty, self).__init__()
+        super().__init__()
 
 class Stairs(Sprite):
     def __init__(self):
-        super(Stairs, self).__init__()
+        super().__init__()
         self.open = False
         self.a_imgs = [("1237.bmp", 0, 1), ("1238.bmp", 0, -45),]
         self.b_imgs = [("1239.bmp", 0, 1),]
@@ -24,7 +24,7 @@ class Stairs(Sprite):
 
 class Floor(Sprite):
     def __init__(self):
-        super(Floor, self).__init__()
+        super().__init__()
         self.a_imgs = [("1241.bmp", 0, 95),]
         self.b_imgs = [("1242.bmp", 0, 95),]
         self.d_imgs = [("1243.bmp", 0, 120),]
@@ -32,7 +32,7 @@ class Floor(Sprite):
 
 class Wall(Sprite):
     def __init__(self):
-        super(Wall, self).__init__()
+        super().__init__()
         self.a_imgs = [("1366.bmp", 0, 0),]
         self.b_imgs = [("1361.bmp", 0, 0),]
         self.c_imgs = [("1362.bmp", 0, 100),]
