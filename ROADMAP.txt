@@ -1,0 +1,48 @@
+pynceofpersia roadmap
+=====================
+
+0.0.1:
+- Support map creation
+- Support the following tiles:
+  - Empty
+  - Floor
+  - Wall
+- Fixed-screens based navigation
+
+0.0.2:
+- Support highlighting tiles for navigation
+- Scrolling based navigation
+
+0.0.3:
+- Support the following tile:
+  - AnimatedTorch
+
+0.0.4:
+- Loading/Level system
+- Support the following tiles:
+  - BrokenFloor
+  - AnimatedWobblyFloor
+
+0.0.5:
+- Directional events system
+- Gravity
+
+0.0.6:
+- Triggering events system
+- Support the following tiles:
+  - TriggerFloor
+  - LevelDoor
+  - AnimatedLevelDoor
+
+0.0.7:
+- Level linking system
+
+0.0.8:
+- Add a still character
+- Collisions
+
+0.0.9:
+- Z-index display
+- Support the following tile:
+  - StonePillar
+  - StoneStairs
