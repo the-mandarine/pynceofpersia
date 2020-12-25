@@ -12,6 +12,16 @@ class Empty(Sprite):
     def __init__(self):
         super(Empty, self).__init__()
 
+class Stairs(Sprite):
+    def __init__(self):
+        super(Stairs, self).__init__()
+        self.open = False
+        self.a_imgs = [("1237.bmp", 0, 1), ("1238.bmp", 0, -45),]
+        self.b_imgs = [("1239.bmp", 0, 1),]
+        self.c_imgs = [("1240.bmp", 0, 80),]
+        self.d_imgs = [("1236.bmp", 0, 120),]
+
+
 class Floor(Sprite):
     def __init__(self):
         super(Floor, self).__init__()

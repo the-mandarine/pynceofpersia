@@ -1,4 +1,4 @@
-from scenery.base import Empty, Floor, Wall
+from scenery.base import Empty, Stairs, Floor, Wall
 import os
 import json
 
@@ -8,7 +8,11 @@ TILES = {\
   '.': [Empty],
   '_': [Floor],
   '#': [Wall],
+  '@': [Stairs],
 }
+
+STAGE_START = '@'
+
 DEFAULT_TILE = Empty
 
 
@@ -37,6 +41,8 @@ def parse_stage(path):
 
 
 class Stage(object):
+    start_pos = (0, 0)
+
     def __init__(self, stage_path=""):
         self.stage_path = stage_path
         self.txtmap, _ = parse_stage(stage_path)
@@ -56,6 +62,8 @@ class Stage(object):
                 tile_objs = TILES.get(tile_chr, [DEFAULT_TILE()])
                 objs = [obj() for obj in tile_objs]
                 self.stage[map_y].append(objs)
+                if tile_chr == STAGE_START:
+                    self.start_pos = (map_x, map_y)
                 map_x += 1
 
             map_y += 1
