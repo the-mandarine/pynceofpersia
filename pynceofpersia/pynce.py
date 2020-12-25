@@ -10,6 +10,8 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
+RED_ST = (255, 0, 0, 50)
+
 pygame.init()
 
 
@@ -73,10 +75,12 @@ def main():
                 x += 1
             y += 1
 
-        px = s_pos_x * 64 + 75
-        py = (s_pos_y - 1) * 125 + 100
-        pygame.draw.circle(screen, WHITE, (px, py), 15, 4)
-
+        px = s_pos_x * 64 + 20
+        py = (s_pos_y - 1) * 125 + 30
+        rect = pygame.Surface((62, 81))
+        rect.set_alpha(100)
+        rect.fill(RED)
+        screen.blit(rect, (px, py))
 
         # --- Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
