@@ -1,4 +1,8 @@
 from scenery.base import Empty, Floor, Wall
+import os
+import json
+
+BASE_STAGE_PATH = "stages"
 
 TILES = {\
   '.': [Empty],
@@ -8,20 +12,41 @@ TILES = {\
 DEFAULT_TILE = Empty
 
 
+def parse_stage(path):
+    spath = os.path.join(BASE_STAGE_PATH, path)
+    resources = {}
+    map = ""
+    map_started = False
+    with open(spath, 'r') as sfile:
+        for line in sfile:
+            if map_started:
+                map += line
+            elif not line.strip():
+                map_started = True
+                continue
+            else:
+                # parse resource
+                key, value = line.split(":")
+                resources[key] = value.strip()
+
+    print("Stage map:")
+    print(map)
+    print("Stage resources:")
+    print(json.dumps(resources, indent=2))
+    return map, resources
+
+
 class Stage(object):
     def __init__(self, stage_path=""):
         self.stage_path = stage_path
-        self.txt = """\
-_..................#
-#_.................#
-._....__...........#
-.#_.._##____.......#
-..#__#____.#.......#
-...................#
-"""
+        self.txtmap, _ = parse_stage(stage_path)
+
+        self.build_stage()
+
+    def build_stage(self):
         self.stage = []
         map_y = 0
-        for line in self.txt.split():
+        for line in self.txtmap.split():
             if not line:
                 continue
             self.stage.append([])

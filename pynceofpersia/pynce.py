@@ -26,7 +26,7 @@ def main():
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
 
-    stage = Stage()
+    stage = Stage("level1.txt")
     cur_x = 0
     cur_y = 0
     scr_stage = stage.get_stage_part(cur_x, cur_y, scrolling=False)
