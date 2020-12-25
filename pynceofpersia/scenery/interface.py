@@ -18,6 +18,7 @@ def load_image(path, key):
 
 class Sprite(pygame.sprite.Sprite):
     map_pos = (0, 0)
+    screen_pos = (0, 0)
     a_imgs = []
     b_imgs = []
     c_imgs = []
@@ -31,23 +32,25 @@ class Sprite(pygame.sprite.Sprite):
     def pick_imgs(self):
         pass
 
-    def ordered_img_paths(self):
-        if self.bottom:
+    def ordered_img_paths(self, roof=False):
+        if roof:
+            return self.d_imgs
+        elif self.bottom:
             return self.bottom.left.c_imgs + self.left.b_imgs + self.d_imgs + self.a_imgs + self.front_imgs
         return self.left.b_imgs + self.d_imgs + self.a_imgs + self.front_imgs
 
-    def load_imgs(self, color_key=WHITE):
+    def load_imgs(self, roof=False, color_key=WHITE):
         self.pick_imgs()
-        img_paths = self.ordered_img_paths()
+        img_paths = self.ordered_img_paths(roof=roof)
         self.imgs = [(load_image(img_path[0], color_key), img_path[1:3])
                      for img_path in img_paths]
 
-    def draw(self, screen, tile_width, tile_height):
+    def draw(self, screen, tile_width=64, tile_height=125, roof=False):
         if self.imgs is None:
-            self.load_imgs()
+            self.load_imgs(roof=roof)
 
         for img, rel_pos in self.imgs:
             screen.blit(img,
-                        (self.map_pos[0] * tile_width + rel_pos[0],
-                         self.map_pos[1] * tile_height + rel_pos[1],)
+                        (self.screen_pos[0] * tile_width + rel_pos[0],
+                         self.screen_pos[1] * tile_height + rel_pos[1] + 5,)
                         )

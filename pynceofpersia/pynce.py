@@ -15,14 +15,11 @@ pygame.init()
 
 #background_image = pygame.image.load("imgs/motifs.png").convert()
 
-
-
-
 def main():
     # Loop until the user clicks the close button.
     done = False
     # Set the width and height of the screen [width, height]
-    size = (640, 480)
+    size = (640, 400)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Pynce of Persia")
 
@@ -31,7 +28,9 @@ def main():
 
     txt_stage = get_txt_stage()
     obj_stage = txt2stage(txt_stage)
-    cur_screen_stage = get_stage_part(obj_stage, 0, 0)
+    cur_x = 2
+    cur_y = 2
+    scr_stage, scr_roof = get_stage_part(obj_stage, cur_x, cur_y, scrolling=False)
 
     while not done:
         # --- Main event loop
@@ -46,14 +45,19 @@ def main():
         player_position = pygame.mouse.get_pos()
         #x = player_position[0]
         #y = player_position[1]
-        y = len(cur_screen_stage) - 1
-        for line in cur_screen_stage:
-            x = len(line) - 1
+        x = 0
+        for tile in scr_roof:
+            for element in tile:
+                element.draw(screen, roof=True)
+            x += 1
+        y = 0
+        for line in scr_stage:
+            x = 0
             for tile in line:
                 for element in tile:
-                    element.draw(screen, 64, 125)
-                x -= 1
-            y -= 1
+                    element.draw(screen)
+                x += 1
+            y += 1
 
         # --- Go ahead and update the screen with what we've drawn.
         pygame.display.flip()

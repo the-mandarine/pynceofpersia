@@ -5,13 +5,16 @@ TILES = {\
   '_': [Floor],
   '#': [Wall],
 }
+DEFAULT_TILE = Empty
 
 def get_txt_stage():
     stage = """\
-###__...____________
-##_._._.############
-##____#..__________#
-##_._...############
+_..................#
+#_.................#
+._....__...........#
+.#_.._##____.......#
+..#__#____.#.......#
+...................#
 """
     return stage
 
@@ -25,7 +28,7 @@ def txt2stage(txt):
         map_x = 0
         left = None
         for tile_chr in line:
-            tile_objs = TILES.get(tile_chr, [Empty])
+            tile_objs = TILES.get(tile_chr, [DEFAULT_TILE()])
             objs = [obj() for obj in tile_objs]
             stage[map_y].append(objs)
             map_x += 1
@@ -57,7 +60,7 @@ def txt2stage(txt):
 
     return stage
 
-def get_stage_part(stage, start_x, start_y, max_x=10, max_y=3):
+def get_stage_part(stage, start_x, start_y, max_x=10, max_y=3, scrolling=False):
     max_x = min([len(line) for line in stage] + [max_x])
     max_y = min((len(stage), max_y))
     stage_part = [max_x * [None] for i in range(max_y)]
@@ -66,7 +69,19 @@ def get_stage_part(stage, start_x, start_y, max_x=10, max_y=3):
         x = 0
         for tile in line[start_x:start_x+max_x]:
             stage_part[y][x] = tile
+            for element in tile:
+                element.screen_pos = (x, y)
             x += 1
         y += 1
 
-    return stage_part
+    if start_y == 0:
+        stage_roof = [[DEFAULT_TILE()] for i in range(max_x)]
+    else:
+        stage_roof = stage[start_y-1][start_x:max_x]
+    map_x = 0
+    for tile in stage_roof:
+        for element in tile:
+            element.screen_pos = (map_x, -1)
+        map_x += 1
+
+    return stage_part, stage_roof
