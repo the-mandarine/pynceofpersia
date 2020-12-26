@@ -1,3 +1,5 @@
+
+from random import randint
 import pygame
 import os
 
@@ -36,7 +38,7 @@ class Sprite(pygame.sprite.Sprite):
 
     def __init__(self, tick=10):
         super(Sprite, self).__init__()
-        self.img_id = 0
+        self.img_id = randint(0, 20)
         self.tick = tick
         self.last_tick = 0
 
