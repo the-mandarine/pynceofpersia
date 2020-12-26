@@ -19,10 +19,12 @@ class Stairs(Sprite):
     def __init__(self):
         super().__init__()
         self.open = False
-        self.a_imgs = [("1237.bmp", 0, 1), ("1238.bmp", 0, -45),]
+        self.a_imgs = [("1237.bmp", 0, 1),]
         self.b_imgs = [("1239.bmp", 0, 1),]
         self.c_imgs = [("1240.bmp", 0, 80),]
         self.d_imgs = [("1236.bmp", 0, 120),]
+        self.f_imgs = [("1238.bmp", 0, -45),]
+
 
 
 class Floor(Sprite):
@@ -60,3 +62,27 @@ class Wall(Sprite):
             else:
                 self.a_imgs = [("1368.bmp", 0, 0,),]
                 self.d_imgs = [("1367.bmp", 0, 120,),]
+
+class Torch(Sprite):
+    chr = "i"
+    def __init__(self):
+        super().__init__()
+        self.tick = 80
+        self.e_imgs = [
+                       ("0151.bmp", 50, 0),
+                       ("0152.bmp", 50, 0),
+                       ("0153.bmp", 50, 0),
+                       ("0154.bmp", 50, 0),
+                       ("0155.bmp", 50, 0),
+                       ("0156.bmp", 50, 0),
+                       ("0157.bmp", 50, 0),
+                       ("0158.bmp", 50, 0),
+                       ("0159.bmp", 50, 0),
+                      ]
+        self.f_imgs = [("1346.bmp", 55, 35)]
+
+class EmptyTorch(Torch, Empty):
+    pass
+
+class FloorTorch(Torch, Floor):
+    pass

@@ -1,4 +1,4 @@
-from scenery.base import Empty, Stairs, Floor, Wall
+from scenery.base import *
 from pydoc import locate
 import os
 import json
@@ -7,7 +7,9 @@ BASE_STAGE_PATH = "stages"
 
 TILES = {\
   '.': [Empty],
+  'i': [EmptyTorch],
   '_': [Floor],
+  'I': [FloorTorch],
   '#': [Wall],
   '@': [Stairs],
 }

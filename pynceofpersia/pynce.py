@@ -42,26 +42,21 @@ def main():
                 done = True
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_i:
-                    print("up")
+                    #print("up")
                     cur_y = max(1, cur_y - 1)
                 if event.key == pygame.K_j:
-                    print("left")
+                    #print("left")
                     # TODO: allow left-right loop
                     cur_x = max(0, cur_x - 1)
                 if event.key == pygame.K_k:
-                    print("down")
+                    #print("down")
                     cur_y = min(stage.max_y - 1, cur_y + 1)
                 if event.key == pygame.K_l:
-                    print("right")
+                    #print("right")
                     cur_x = min(stage.max_x - 1, cur_x + 1)
 
                 scr_stage = stage.get_screen(cur_x, cur_y, scrolling=False)
                 s_pos_x, s_pos_y = stage.get_scr_pos(cur_x, cur_y)
-
-                print(30 * "=")
-                for line in scr_stage:
-                    print("".join([tile[0].chr for tile in line]))
-
 
         #screen.blit(background_image, [0, 0])
         screen.fill(BLACK)
@@ -85,8 +80,7 @@ def main():
         # --- Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
 
-        # --- Limit to 60 frames per second
-        clock.tick(60)
+        tick = clock.tick(60)
 
     # Close the window and quit.
     pygame.quit()
